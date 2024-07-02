@@ -1,4 +1,9 @@
+import useUserStore from "@/store/userStore";
+
 const Sidebar = () => {
+	// const user = useUserStore((state) => state.user);
+
+	
 	return (
 		<div className='h-screen w-56 bg-slate-100 flex flex-col'>
 			<div className='h1-text flex items-center gap-1 justify-center py-3 text-slate-100 mb-6 bg-gray-800 rounded-br-2xl'>
@@ -59,15 +64,15 @@ const Sidebar = () => {
 			</ul>
 			<div className='mt-auto p-5 text-slate-900'>
 				<div className='flex space-x-2 mb-4'>
-					<span className='bg-gray-300 px-2 py-1 rounded text-sm'>
-						Админ
-					</span>
+					{/* <span className='bg-gray-300 px-2 py-1 rounded text-sm'>
+						{user?.roles}
+					</span> */}
 					<span className='bg-gray-300 px-2 py-1 rounded text-sm'>
 						Пользователь
 					</span>
 				</div>
 				<div className=' w-full flex justify-between'>
-					<h6>Денис Петров</h6>
+					{/* <h6>{user?.name}</h6> */}
 					<button>
 						<svg
 							width='18'

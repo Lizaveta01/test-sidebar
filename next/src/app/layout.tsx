@@ -13,6 +13,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("ROOT layout");
+  
   return (
     <html lang="ru">
       <body className={`${inter.className} bg-slate-100`}>{children}</body>
