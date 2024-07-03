@@ -1,15 +1,5 @@
-import RoleGuard from "@/utils/RoleGuard";
-import AuthorizedGuard from "@/utils/AuthorizedGuard";
+import RoleGuard from '@/utils/RoleGuard';
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <p>Profile</p>
-      <RoleGuard> {children}</RoleGuard>
-    </>
-  );
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  return <RoleGuard>{children}</RoleGuard>;
 }

@@ -1,15 +1,10 @@
-import Sidebar from "@/components/layouts/sidebar";
-import AuthorizedGuard from "../../utils/AuthorizedGuard";
+import Sidebar from '@/components/Sidebar';
 
-export default async function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthorizedGuard>
+    <div className="flex relative">
       <Sidebar />
-      {children}
-    </AuthorizedGuard>
+      <div className="flex align-center justify-center bg-[#F1F5F9] py-[10px] w-full">{children}</div>
+    </div>
   );
 }

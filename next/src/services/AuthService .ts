@@ -14,18 +14,10 @@ const login = async (data: ILoginData ) => {
       .catch((error) => {
         console.log('error', error);
       });
-      console.log("response.data", response);
-    localStorage.setItem('token', response.token);
-  } catch (err: unknown | Error) {
-    if (err instanceof Error) {
-      console.log(err.message);
-    }
-  }
-};
 
-const checkAuth = async () => {
-  try {
-    const refreshToken = localStorage.getItem('token');
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('user', JSON.stringify(response.user));
+    return response;
   } catch (err: unknown | Error) {
     if (err instanceof Error) {
       console.log(err.message);
@@ -34,8 +26,7 @@ const checkAuth = async () => {
 };
 
 export const AuthService = {
-  login,
-  checkAuth,
+  login
 };
 
  

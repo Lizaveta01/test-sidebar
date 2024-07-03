@@ -1,1 +1,1 @@
-export {API_PATH} from './api';
+export {API_PATH, BASE_URL} from './api';

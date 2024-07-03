@@ -13,7 +13,15 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      
+      colors: {
+        'gray-table-bg': 'rgba(15, 23, 42, 0.03)',
+        'modal-shadow-bg': 'rgba(15, 23, 42, 0.45)',
+        'gray-main': '#CBD5E1'
+      },
+      fontSize: {
+        '15': '15px',
+        '13': '13px',
+      }
     },
   },
   plugins: [],

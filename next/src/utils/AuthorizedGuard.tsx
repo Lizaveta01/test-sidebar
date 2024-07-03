@@ -1,34 +1,27 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import Auth from '@/app/(auth)/auth/page';
+import useUserStore from '@/store/userStore';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-export default function AuthorizedGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthorizedGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const [isUnauthenticated, setIsUnauthenticated] = useState(true);
+  const path = usePathname();
+  const token = useUserStore((state) => state.token);
 
   useEffect(() => {
-   const token = localStorage.getItem("token");
-  
     if (!token) {
-      router.push("/");
-    }else {
-      setIsUnauthenticated(false);
+      router.push('/');
+    } 
+    if(path === '/' && token) {
+      router.back();
     }
-  }, [router]);
+  }, [token, path]);
 
-  if (isUnauthenticated) {
-    return <><p>LOADING</p></>; /// add spiner
+  if (!token) {
+    return <Auth />;
   }
 
-
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

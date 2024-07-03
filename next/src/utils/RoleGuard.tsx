@@ -1,29 +1,24 @@
-"use client";
+'use client';
 
-import useUserStore from "@/store/userStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import Products from '@/app/(public)/products/page';
+import useUserStore from '@/store/userStore';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-export default function RoleGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RoleGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const path = usePathname();
   const user = useUserStore((state) => state.user);
-  const [isAdmin, setIsAdmin] = useState<null | boolean>(null);
-
-  useEffect(() => {
-    if (user?.roles.includes(1)) {
-      setIsAdmin(true);
-    } else {
-      router.push("/");
+ 
+  useEffect(() => {   
+    if (!user?.roles.includes(1)) {
+      router.push('/products');
     }
-  }, [isAdmin]);
+  }, [path]);
 
-  if(!isAdmin){
- return <p>LOADING PAGE</p>;
-  } 
+  if (!user?.roles.includes(1)) {
+    return <Products/>;
+  }
 
   return <>{children}</>;
 }
