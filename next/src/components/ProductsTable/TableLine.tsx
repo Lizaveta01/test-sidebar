@@ -20,14 +20,14 @@ const TableLine: FC<ITableLineProps> = ({ product, onDelete, onUpdate, onClickPr
         onClickProduct();
       }}
     >
-      <td className="h-[56px] py-[12px] px-[10px] rounded-l-md">
-        <img src={product.image} alt={product.name} className="w-16 h-16 object-cover" />
+      <td className="h-[56px] py-[12px] px-[10px] rounded-md">
+        <img src={product.photoUrl} alt={product.name} className="w-16 h-16 object-cover rounded-[5px]" />
       </td>
-      <td className="h-[56px] py-[12px] px-[10px]">{product.name}</td>
-      <td className="h-[56px] py-[12px] px-[10px]">{product.quantity}</td>
-      <td className="h-[56px] py-[12px] px-[10px]">{product.manufacturerId}</td>
-      <td className="h-[56px] py-[12px] px-[10px]">{product.price}</td>
-      <td className="h-[56px] py-[12px] px-[10px] rounded-r-md">
+      <td className="h-[56px] py-[12px] px-[17px]">{product.name}</td>
+      <td className="h-[56px] py-[12px] px-[17px] text-center">{product.quantity}</td>
+      <td className="h-[56px] py-[12px] px-[17px]">{product.manufacturerName}</td>
+      <td className="h-[56px] py-[12px] px-[17px] text-center">{product.price} p</td>
+      <td className="h-[56px] py-[12px] px-[17px] rounded-r-md">
         <div className="flex gap-1">
           <button
             className="px-1 py-1 rounded-md transition duration-200  hover:bg-slate-300"

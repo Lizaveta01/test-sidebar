@@ -14,21 +14,20 @@ const ProductsTable: FC<IProductsTableProps> = ({ products }) => {
   const { updateModalType, setSelectedProduct } = useModalStore();
 
   const openProductModal = (product: IProduct, modalType: ModalTypes) => {
-    console.log(modalType);
     setSelectedProduct(product);
     updateModalType(modalType);
   };
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full">
-        <thead className="py-[31px] px-[17px]">
+      <table className=" table-fixed w-full">
+        <thead className="py-[31px] px-[17px] gap-[77px]">
           <tr>
-            <th className="text-left font-normal text-15 py-[31px] px-[17px]">Фото</th>
-            <th className="text-left font-normal text-15 py-[31px] px-[17px]">Название</th>
-            <th className="text-left font-normal text-15 py-[31px] px-[17px]">Количество</th>
-            <th className="text-left font-normal text-15 py-[31px] px-[17px]">Производитель</th>
-            <th className="text-left font-normal text-15 py-[31px] px-[17px]">Цена</th>
+            <th className="text-left font-normal text-15 py-[31px] px-[17px] w-[100px]">Фото</th>
+            <th className="text-left font-normal text-15 py-[31px] px-[17px] truncate">Название</th>
+            <th className="text-center font-normal text-15 py-[31px] px-[17px] ">Количество</th>
+            <th className="text-left font-normal text-15 py-[31px] px-[17px] truncate ">Производитель</th>
+            <th className="text-center font-normal text-15 py-[31px] px-[17px] w-[152px]">Цена</th>
             <th className="text-left font-normal text-15 py-[31px] px-[17px]"></th>
           </tr>
         </thead>

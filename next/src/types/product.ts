@@ -3,6 +3,12 @@ export type IProduct = {
   name: string;
   quantity: number;
   price: string;
-  image: string;
+  photoUrl: string;
   manufacturerId: number;
+  manufacturerName?: string;
+};
+
+export type IManufacturers = {
+  id: number;
+  name: string;
 };
