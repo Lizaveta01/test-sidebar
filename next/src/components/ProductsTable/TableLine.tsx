@@ -1,17 +1,19 @@
-'use client';
 import { FC } from 'react';
 
 import { RemoveIcon, UpdateIcon } from '@/assets/icons';
-import { IProduct } from '@/types';
+import { IManufacturer, IProduct } from '@/types';
 
 interface ITableLineProps {
   product: IProduct;
+  manufacturers: IManufacturer[];
   index: number;
   onDelete: () => void;
   onUpdate: () => void;
   onClickProduct: () => void;
 }
-const TableLine: FC<ITableLineProps> = ({ product, onDelete, onUpdate, onClickProduct, index }) => {
+const TableLine: FC<ITableLineProps> = ({ product, onDelete, onUpdate, onClickProduct, index, manufacturers }) => {
+  const manufacturer = manufacturers.find((item) => item.id == product.manufacturerId);
+
   return (
     <tr
       key={product.id}
@@ -25,7 +27,7 @@ const TableLine: FC<ITableLineProps> = ({ product, onDelete, onUpdate, onClickPr
       </td>
       <td className="h-[56px] py-[12px] px-[17px]">{product.name}</td>
       <td className="h-[56px] py-[12px] px-[17px] text-center">{product.quantity}</td>
-      <td className="h-[56px] py-[12px] px-[17px]">{product.manufacturerName}</td>
+      <td className="h-[56px] py-[12px] px-[17px]">{manufacturer?.name}</td>
       <td className="h-[56px] py-[12px] px-[17px] text-center">{product.price} p</td>
       <td className="h-[56px] py-[12px] px-[17px] rounded-r-md">
         <div className="flex gap-1">

@@ -1,27 +1,19 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { createProductRequest, deleteProductRequest, updateProductRequest } from '@/services';
-import { IProduct } from '@/types';
-import { CrossIcon, UploadIcon } from '@/assets/icons';
-import useModalStore from '@/store/modalStore';
+import React, { FC } from 'react';
 
-const schema = z.object({
-  name: z.string().min(1, 'Название обязательно'),
-  quantity: z.number().min(1, 'Количество должно быть положительным числом'),
-  price: z.number().min(0, 'Цена должна быть неотрицательной'),
-  manufacturer: z.string().min(1, 'Производитель обязателен'),
-  photo: z.any(),
-});
+import { productApi } from '@/resources';
+import useModalStore from '@/store/modalStore';
 
 const DeleteProductModal: FC = ({}) => {
   const { updateModalType, selectedProduct } = useModalStore();
+  const { mutate: deleteProject } = productApi.useDelete();
 
   const deleteItem = () => {
-    deleteProductRequest(selectedProduct?.id!);
-    closeModal();
+    deleteProject(selectedProduct?.id!, {
+      onSuccess: () => {
+        closeModal();
+      },
+    });
   };
 
   const closeModal = () => {

@@ -1,6 +1,6 @@
 import { API_PATH } from '@/constants';
-import axiosInstance from './axiosInstance';
 import { IBreadcrumbs } from '@/types';
+import axiosInstance from '@/utils/axiosInstance';
 
 export const getBreadcrumbsRequest = async (): Promise<IBreadcrumbs[]> => {
   try {

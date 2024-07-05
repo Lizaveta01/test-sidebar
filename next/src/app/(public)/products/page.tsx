@@ -1,15 +1,11 @@
 'use client';
-import { TableCardsIcon, TableLinesIcon } from '@/assets/icons';
-import { Pagination, ProductModal, ProductsCards, ProductsTable, Search } from '@/components';
-import { AuthService, getManufacturersRequest, getProductsRequest } from '@/services';
-import useModalStore from '@/store/modalStore';
-import { IManufacturers, IProduct, ModalTypes } from '@/types';
-import { Metadata } from 'next';
-import { FormEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 
-// export const metadata: Metadata = {
-// 	title: 'Авторизация',
-// };
+import { TableCardsIcon, TableLinesIcon } from '@/assets/icons';
+import { Pagination, ProductsCards, ProductsTable, Search } from '@/components';
+import useModalStore from '@/store/modalStore';
+import { ModalTypes } from '@/types';
+import { manufacturerApi, productApi } from '@/resources';
 
 type CatalogViewType = 'cards' | 'table';
 
@@ -17,40 +13,14 @@ export default function Products() {
   const [catalogView, setCatalogView] = useState<CatalogViewType>('table');
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
-  const [products, setProducts] = useState<IProduct[]>([]);
+
   const updateModalType = useModalStore((state) => state.updateModalType);
-  const [manufacturers, setManufacturers] = useState<IManufacturers[]>([]);
-
-  const getProducts = async () => {
-    try {
-      const response = await getProductsRequest(page, searchQuery);
-
-			let manufacturer = manufacturers;
-
-			if(!manufacturer.length){
-				const resManufacturers = await getManufacturersRequest();
-				manufacturer = resManufacturers;
-				setManufacturers(resManufacturers);
-			}
-     
-      const withManufactures = response.map((item) => ({
-        ...item,
-        manufacturerName: manufacturer.find((m) => m.id === item.manufacturerId)?.name!,
-      }));
-      
-      setProducts(withManufactures);
-    } catch (error) {
-      console.error('Error fetching products or manufacturers:', error);
-    }
-  };
+  const { data: products } = productApi.useGetList({ page, searchQuery: searchQuery, limit: 8 });
+  manufacturerApi.useGetList();
 
   const openCreateProductModal = () => {
     updateModalType(ModalTypes.CREATE_PRODUCT_MODAL);
   };
-
-  useEffect(() => {
-    getProducts();
-  }, [searchQuery, page]);
 
   return (
     <div className="flex p-[20px]  flex-col bg-slate-100 text-zinc-900 w-[1024px] gap-[30px]">
@@ -83,7 +53,9 @@ export default function Products() {
           </button>
         </div>
       </div>
-      {catalogView === 'table' ? <ProductsTable products={products} /> : <ProductsCards products={products} />}
+      {products && !!products.length && (
+        <>{catalogView === 'table' ? <ProductsTable products={products} /> : <ProductsCards products={products} />}</>
+      )}
       <Pagination currentPage={page} pagesCount={13} setPage={(newPage) => setPage(newPage)} />
     </div>
   );

@@ -1,5 +1,6 @@
-import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@/assets/icons';
 import { FC } from 'react';
+
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@/assets/icons';
 
 interface IPaginationProps {
   currentPage: number;

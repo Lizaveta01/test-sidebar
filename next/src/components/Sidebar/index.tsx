@@ -1,7 +1,8 @@
 'use client';
+import { useRouter } from 'next/navigation';
+
 import { ArrowIcon, ExitIcon, HomeIcon } from '@/assets/icons';
 import useUserStore from '@/store/userStore';
-import { useRouter } from 'next/navigation';
 
 const Sidebar = () => {
   const router = useRouter();

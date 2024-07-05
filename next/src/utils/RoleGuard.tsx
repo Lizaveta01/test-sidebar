@@ -1,9 +1,9 @@
 'use client';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 import Products from '@/app/(public)/products/page';
 import useUserStore from '@/store/userStore';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function RoleGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();

@@ -1,12 +1,8 @@
 'use client';
-import { getRandomBreadcrumbsRequest, getBreadcrumbsRequest } from '@/services/breadcrumbs';
-import { IBreadcrumbs } from '@/types';
-import { all } from 'axios';
 import { useEffect, useState } from 'react';
 
-// export const metadata: Metadata = {
-// 	title: 'Авторизация',
-// };
+import { getRandomBreadcrumbsRequest, getBreadcrumbsRequest } from '@/resources/breadcrumbs';
+import { IBreadcrumbs } from '@/types';
 
 export default function Algo() {
   const [breadcrumbs, setBreadcrumbs] = useState<string>('click button');

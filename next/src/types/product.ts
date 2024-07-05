@@ -4,11 +4,11 @@ export type IProduct = {
   quantity: number;
   price: string;
   photoUrl: string;
-  manufacturerId: number;
+  manufacturerId: string;
   manufacturerName?: string;
 };
 
-export type IManufacturers = {
-  id: number;
+export type IManufacturer = {
+  id: string;
   name: string;
 };

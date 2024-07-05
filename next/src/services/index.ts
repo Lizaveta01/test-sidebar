@@ -1,10 +1,2 @@
-export { AuthService } from './AuthService ';
-export { getBreadcrumbsRequest, getRandomBreadcrumbsRequest } from './breadcrumbs';
-export {
-  getProductsRequest,
-  getProductRequest,
-  createProductRequest,
-  updateProductRequest,
-  deleteProductRequest,
-  getManufacturersRequest,
-} from './product';
+export { AuthService } from './auth.service';
+export { default as ApiService } from './api.service';

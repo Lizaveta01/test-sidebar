@@ -1,7 +1,3 @@
-'use client';
-import { ArrowIcon, ExitIcon, HomeIcon } from '@/assets/icons';
-import useUserStore from '@/store/userStore';
-import { useRouter } from 'next/navigation';
 import { FC } from 'react';
 
 interface ISearchProps {

@@ -9,8 +9,7 @@ const Auth = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const updateToken = useUserStore((state) => state.updateToken);
-  const updateUser = useUserStore((state) => state.updateUser);
+  const { updateToken, updateUser } = useUserStore();
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

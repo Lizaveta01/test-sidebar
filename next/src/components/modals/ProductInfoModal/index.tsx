@@ -1,15 +1,14 @@
 'use client';
-import React, { FC, useEffect, } from 'react';
+import React, { FC } from 'react';
 
-import { deleteProductRequest } from '@/services';
 import useModalStore from '@/store/modalStore';
 import { ModalTypes } from '@/types';
+import { manufacturerApi } from '@/resources';
 
 const ProductInfoModal: FC = ({}) => {
   const { updateModalType, selectedProduct } = useModalStore();
-
-  useEffect(() => {}, []);
-
+  const { data: manufacturers } = manufacturerApi.useGetList();
+  const manufacturer = manufacturers!.find((manufacturer) => selectedProduct!.manufacturerId == manufacturer.id);
   const deleteItem = () => {
     updateModalType(ModalTypes.DELETE_PRODUCT_MODAL);
   };
@@ -26,7 +25,7 @@ const ProductInfoModal: FC = ({}) => {
         <div className="flex flex-col gap-5 items-start w-full pl-[10px]">
           <p className="text-13">Колличестов: {selectedProduct?.quantity} шт</p>
           <p className="text-13">Цена: {selectedProduct?.price} p</p>
-          <p className="text-13">Производитель: {selectedProduct?.manufacturerName}</p>
+          <p className="text-13">Производитель: {manufacturer?.name}</p>
         </div>
       </div>
 

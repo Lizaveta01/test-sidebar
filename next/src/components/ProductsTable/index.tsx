@@ -3,6 +3,7 @@ import { FC } from 'react';
 
 import { IProduct, ModalTypes } from '@/types';
 import useModalStore from '@/store/modalStore';
+import { manufacturerApi } from '@/resources';
 
 import TableLine from './TableLine';
 
@@ -12,7 +13,8 @@ interface IProductsTableProps {
 
 const ProductsTable: FC<IProductsTableProps> = ({ products }) => {
   const { updateModalType, setSelectedProduct } = useModalStore();
-
+  const { data: manufacturers } = manufacturerApi.useGetList();
+  
   const openProductModal = (product: IProduct, modalType: ModalTypes) => {
     setSelectedProduct(product);
     updateModalType(modalType);
@@ -36,6 +38,7 @@ const ProductsTable: FC<IProductsTableProps> = ({ products }) => {
             <TableLine
               product={product}
               index={index}
+              manufacturers={manufacturers!}
               onClickProduct={() => openProductModal(product, ModalTypes.INFO_PRODUCT_MODAL)}
               onDelete={() => openProductModal(product, ModalTypes.DELETE_PRODUCT_MODAL)}
               onUpdate={() => openProductModal(product, ModalTypes.UPDATE_PRODUCT_MODAL)}

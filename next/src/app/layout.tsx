@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+
 import AuthorizedGuard from '@/utils/AuthorizedGuard';
 import ModalManager from '@/components/modals/ModalManager';
+
+import QueryProvider from './queryProvider';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,13 +18,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log('ROOT layout');
 
   return (
     <html lang="ru">
       <body className={`${inter.className} bg-slate-100`}>
-        <ModalManager />
-        <AuthorizedGuard>{children}</AuthorizedGuard>
+        <QueryProvider>
+          <ModalManager />
+          <AuthorizedGuard>{children}</AuthorizedGuard>
+        </QueryProvider>
       </body>
     </html>
   );

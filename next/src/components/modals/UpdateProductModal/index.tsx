@@ -4,17 +4,17 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
-import { createProductRequest, updateProductRequest } from '@/services';
 import { IProduct, ModalTypes } from '@/types';
 import { CrossIcon, UploadIcon } from '@/assets/icons';
 import useModalStore from '@/store/modalStore';
+import { productApi, manufacturerApi } from '@/resources';
 
 const schema = z.object({
   name: z.string().min(1, 'Название обязательно'),
   quantity: z.number().min(1, 'Количество должно быть положительным числом'),
   price: z.number().min(1, 'Цена должна быть неотрицательной'),
-  manufacturer: z.string().min(1, 'Производитель обязателен'),
-  photo: z.any(),
+  manufacturerId: z.string().min(1, 'Производитель обязателен'),
+  photo: z.string().min(10, 'Должна быть фотография'),
 });
 
 const UpdateProductModal: FC = () => {
@@ -23,6 +23,7 @@ const UpdateProductModal: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues:
@@ -30,7 +31,7 @@ const UpdateProductModal: FC = () => {
         name: selectedProduct?.name || '',
         quantity: selectedProduct?.quantity || 0,
         price: selectedProduct?.price || 0,
-        manufacturer: selectedProduct?.manufacturerId || '',
+        manufacturerId: selectedProduct?.manufacturerId! || '',
         photo: selectedProduct?.photoUrl || '',
       } || {},
   });
@@ -38,10 +39,24 @@ const UpdateProductModal: FC = () => {
   const [fileName, setFileName] = useState('');
   const [filePreview, setFilePreview] = useState<string | null>(null);
 
+  const { mutate: createProduct } = productApi.useCreate();
+  const { mutate: updateProduct } = productApi.useUpdate(selectedProduct?.id!);
+  const { data: manufacturers } = manufacturerApi.useGetList();
+
   useEffect(() => {
     setFilePreview(selectedProduct?.photoUrl!);
     setFileName(selectedProduct?.photoUrl!);
   }, [selectedProduct]);
+
+  const handleRemoveFile = () => {
+    setFileName('');
+    setFilePreview(null);
+    setValue('photo', '');
+    const fileInput = document.getElementById('file-input') as HTMLInputElement | null;
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -49,18 +64,9 @@ const UpdateProductModal: FC = () => {
       const file = files[0];
       setFileName(file.name);
       setFilePreview(URL.createObjectURL(file));
+      setValue('photo', file.name);
     } else {
-      setFileName('');
-      setFilePreview(null);
-    }
-  };
-
-  const handleRemoveFile = () => {
-    setFileName('');
-    setFilePreview(null);
-    const fileInput = document.getElementById('file-input') as HTMLInputElement | null;
-    if (fileInput) {
-      fileInput.value = '';
+      handleRemoveFile();
     }
   };
 
@@ -72,21 +78,23 @@ const UpdateProductModal: FC = () => {
   };
 
   const onSubmit = (data: any) => {
-    console.log(data);
     const productData: IProduct = {
       name: data.name,
       quantity: data.quantity,
       price: data.price,
-      manufacturerId: data.manufacturer,
+      manufacturerId: data.manufacturerId,
       photoUrl: filePreview!,
     };
 
     if (modalType === ModalTypes.UPDATE_PRODUCT_MODAL) {
-      updateProductRequest(productData, selectedProduct?.id!);
+      updateProduct(productData, {
+        onSuccess: closeModal,
+      });
     } else {
-      createProductRequest(productData);
+      createProduct(productData, {
+        onSuccess: closeModal,
+      });
     }
-    closeModal();
   };
 
   const closeModal = () => {
@@ -138,23 +146,26 @@ const UpdateProductModal: FC = () => {
       <div className="px-[10px]">
         <label className="block mb-1">Производитель</label>
         <select
-          {...register('manufacturer', { required: 'Выберите производителя' })}
-          value={selectedProduct?.manufacturerName!}
+          {...register('manufacturerId', { required: 'Выберите производителя' })}
+          defaultValue={selectedProduct?.manufacturerId || ''}
           className="w-full text-[13px] px-[10px] py-[6px] h-[28px] rounded-md bg-[#C9CFD8] placeholder:text-[#888F99] border focus:border-[#C9CFD8] focus:bg-transparent outline-none"
         >
-          <option value="Компания1" selected>
-            {selectedProduct?.manufacturerName!}
-          </option>
-          <option value="Компания2">Компания2</option>
-          <option value="Компания3">Компания3</option>
+          {manufacturers?.map((item) => {
+            const isSelected = item.id === selectedProduct?.manufacturerId!;
+            return (
+              <option value={item.id} selected={isSelected} key={item.id}>
+                {item.name}
+              </option>
+            );
+          })}
         </select>
 
-        {errors.manufacturer && <p className="text-red-600">{errors.manufacturer.message}</p>}
+        {errors.manufacturerId && <p className="text-red-600">{errors.manufacturerId.message}</p>}
       </div>
 
       <div className="px-[10px] ">
         <label className="block mb-1">Фото</label>
-        <input {...register('photo')} type="file" className="hidden" id="file-input" onChange={handleFileChange} />
+        <input type="file" className="hidden" id="file-input" onChange={handleFileChange} />
         {fileName ? (
           <div>
             <div className="flex items-center py-1 justify-between">
